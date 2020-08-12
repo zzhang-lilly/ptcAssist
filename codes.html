@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2020-08-12" />
+
+<title>ptcAssist source code</title>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #ffffff; color: #1f1c1b; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #ffffff; color: #a0a0a0; border-right: 1px solid #a0a0a0; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #1f1c1b; background-color: #ffffff; }
+code > span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code > span.dt { color: #0057ae; } /* DataType */
+code > span.dv { color: #b08000; } /* DecVal */
+code > span.bn { color: #b08000; } /* BaseN */
+code > span.fl { color: #b08000; } /* Float */
+code > span.cn { color: #aa5500; } /* Constant */
+code > span.ch { color: #924c9d; } /* Char */
+code > span.sc { color: #3daee9; } /* SpecialChar */
+code > span.st { color: #bf0303; } /* String */
+code > span.vs { color: #bf0303; } /* VerbatimString */
+code > span.ss { color: #ff5500; } /* SpecialString */
+code > span.im { color: #ff5500; } /* Import */
+code > span.co { color: #898887; } /* Comment */
+code > span.do { color: #607880; } /* Documentation */
+code > span.an { color: #ca60ca; } /* Annotation */
+code > span.cv { color: #0095ff; } /* CommentVar */
+code > span.ot { color: #006e28; } /* Other */
+code > span.fu { color: #644a9b; } /* Function */
+code > span.va { color: #0057ae; } /* Variable */
+code > span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #1f1c1b; } /* Operator */
+code > span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code > span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code > span.pp { color: #006e28; } /* Preprocessor */
+code > span.at { color: #0057ae; } /* Attribute */
+code > span.re { color: #0057ae; } /* RegionMarker */
+code > span.in { color: #b08000; } /* Information */
+code > span.wa { color: #bf0303; } /* Warning */
+code > span.al { color: #bf0303; font-weight: bold; } /* Alert */
+code > span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code > span. { color: #1f1c1b; } /* Normal */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ptcAssist source code</h1>
+<h4 class="date">August 12, 2020</h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#frequentist">Frequentist</a></li>
+<li><a href="#bayesian">Bayesian</a></li>
+</ul>
+</div>
+
+<style type="text/css">
+code.r{
+  font-size: 15px;
+}
+</style>
+<div id="frequentist" class="section level3">
+<h3>Frequentist</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list=</span><span class="kw">ls</span>())
+nn &lt;-<span class="st"> </span><span class="kw">length</span>(ns &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>))
+nx &lt;-<span class="st"> </span><span class="kw">length</span>(xs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>))
+dfs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ncase=</span>xs)
+<span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nn){
+  n &lt;-<span class="st"> </span>ns[k]
+  z &lt;-<span class="st"> </span><span class="kw">numeric</span>()
+  df &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nx){
+    x &lt;-<span class="st"> </span>xs[i]
+    y &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">binom.test</span>(<span class="dt">x=</span>x, <span class="dt">n=</span>n)<span class="op">$</span>conf.int)
+    df &lt;-<span class="st"> </span><span class="kw">rbind</span>( df, <span class="kw">data.frame</span>(<span class="dt">n=</span>n, <span class="dt">orr=</span>x<span class="op">/</span>n, <span class="dt">lower=</span>y[<span class="dv">1</span>], <span class="dt">upper=</span>y[<span class="dv">2</span>]) )
+  }
+  dfs &lt;-<span class="st"> </span><span class="kw">cbind</span>(dfs, df)
+}
+<span class="co"># print(round(dfs,2), row.names=FALSE)</span>
+knitr<span class="op">::</span><span class="kw">kable</span>(dfs, <span class="dt">digits=</span><span class="dv">2</span>, 
+             <span class="dt">caption =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">label{tab:CPI}CP intervals.&quot;</span>)</code></pre></div>
+</div>
+<div id="bayesian" class="section level3">
+<h3>Bayesian</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="dv">1</span>;  b &lt;-<span class="st"> </span><span class="dv">1</span>  <span class="co">#shapes for Beta prior</span>
+r0 &lt;-<span class="st"> </span>.<span class="dv">25</span>
+r &lt;-<span class="st"> </span>.<span class="dv">6</span>
+cl &lt;-<span class="st"> </span>.<span class="dv">6</span> 
+nn &lt;-<span class="st"> </span><span class="kw">length</span>(ns &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">120</span>))
+nr &lt;-<span class="st"> </span><span class="kw">length</span>(rs &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,.<span class="dv">35</span>, <span class="dt">by=</span>.<span class="dv">05</span>))
+dfs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ncase=</span><span class="kw">round</span>(ns[<span class="dv">1</span>]<span class="op">*</span>rs))
+<span class="cf">for</span>(k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nn){
+  n &lt;-<span class="st"> </span>ns[k]
+  z &lt;-<span class="st"> </span><span class="kw">numeric</span>()
+  df &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>nr){
+    x &lt;-<span class="st"> </span><span class="kw">round</span>(n<span class="op">*</span>rs[i])
+    y &lt;-<span class="st"> </span><span class="kw">qbeta</span>(<span class="kw">c</span>((<span class="dv">1</span><span class="op">-</span>cl)<span class="op">/</span><span class="dv">2</span>, <span class="dv">1</span><span class="op">-</span>(<span class="dv">1</span><span class="op">-</span>cl)<span class="op">/</span><span class="dv">2</span>), x<span class="op">+</span>a, n<span class="op">-</span>x<span class="op">+</span>b)
+    tmp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">n=</span>n, <span class="dt">orr=</span>x<span class="op">/</span>n, <span class="dt">lower=</span>y[<span class="dv">1</span>], <span class="dt">upper=</span>y[<span class="dv">2</span>])
+    <span class="cf">if</span>(k<span class="op">&gt;</span><span class="dv">1</span>) tmp &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">data.frame</span>(<span class="dt">ncase=</span>x), tmp)
+    df &lt;-<span class="st"> </span><span class="kw">rbind</span>( df, tmp)
+  }
+  dfs &lt;-<span class="st"> </span><span class="kw">cbind</span>(dfs, df)
+}
+<span class="co"># print(round(dfs,2), row.names=FALSE)</span>
+knitr<span class="op">::</span><span class="kw">kable</span>(dfs, <span class="dt">digits=</span><span class="dv">2</span>, 
+             <span class="dt">caption =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">label{tab:BI}Bayesian intervals.&quot;</span>)
+
+dfs &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+<span class="cf">for</span>(sid <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>){
+  <span class="cf">if</span>(sid<span class="op">==</span><span class="dv">1</span>){ x &lt;-<span class="st"> </span><span class="dv">0</span>;  n &lt;-<span class="st"> </span><span class="dv">6</span>;  r0 &lt;-<span class="st"> </span>.<span class="dv">25</span> }
+  <span class="cf">if</span>(sid<span class="op">==</span><span class="dv">2</span>){ x &lt;-<span class="st"> </span><span class="dv">0</span>;  n &lt;-<span class="st"> </span><span class="dv">10</span>;  r0 &lt;-<span class="st"> </span>.<span class="dv">15</span> }
+  pObs0 &lt;-<span class="st"> </span><span class="dv">100</span><span class="op">*</span><span class="kw">pbinom</span>(x,n,r0)
+  pExceeds &lt;-<span class="st"> </span><span class="dv">100</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">pbeta</span>(r0, x<span class="op">+</span>a, n<span class="op">-</span>x<span class="op">+</span>b))
+  tmp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">n=</span>n, <span class="st">'ORRpct'</span>=<span class="dv">100</span><span class="op">*</span>r0, <span class="dt">pObs0=</span>pObs0, <span class="dt">pExceeds=</span>pExceeds)
+  dfs &lt;-<span class="kw">rbind</span>(dfs, tmp)
+}
+<span class="co"># print(round(dfs,1), row.names=FALSE)</span>
+knitr<span class="op">::</span><span class="kw">kable</span>(dfs, <span class="dt">digits=</span><span class="dv">1</span>, 
+             <span class="dt">caption =</span> <span class="st">&quot;</span><span class="ch">\\</span><span class="st">label{tab:BPP}Bayesian posterior probabilities.&quot;</span>)</code></pre></div>
+<p><a href="#top">Back to top</a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
